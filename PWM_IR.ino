@@ -14,9 +14,11 @@
 
 //use pin 11 on the Mega instead, otherwise there is a frequency cap at 31 Hz
 int pwmOut = 11;                // the pin that the LED is attached to
-int32_t frequency = 3000; //frequency (in Hz)
+int32_t frequency = 10000; //frequency (in Hz)
 int sensorPin = A0;
 int sensorValue = 0;
+int sum = 0;
+int count = 0;
 
 void setup()
 {
@@ -25,7 +27,7 @@ void setup()
 
   //sets the frequency for the specified pin
   bool success = SetPinFrequencySafe(pwmOut, frequency);
-  bool success2 = SetPinFrequencySafe(12, frequency);
+//  bool success2 = SetPinFrequencySafe(12, frequency);
   
   
   Serial.begin(9600);
@@ -40,11 +42,16 @@ void setup()
 void loop()
 {
   //use this functions instead of analogWrite on 'initialized' pins
-  pwmWrite(pwmOut, 180);
-  pwmWrite(12, 180);
+  pwmWrite(pwmOut, 128);
+//  pwmWrite(12, 180);
   sensorValue = analogRead(sensorPin);
-  Serial.println(sensorValue);
-
-  delay(300);      
+  sum += sensorValue;
+  count++;
+  if(count == 10){
+    count = 0;
+    Serial.println(sum);
+    sum = 0;
+  }
+  delay(30);      
 }
 
