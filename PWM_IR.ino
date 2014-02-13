@@ -19,9 +19,8 @@ int sensorPin = A0;
 int sensorValue = 0;
 int sum = 0;
 int count = 0;
-int max = 0;
-int min = 9999;
-int temp[10];
+int preValue = 0;
+int alpha = 0.5;
 
 void setup()
 {
@@ -30,46 +29,40 @@ void setup()
 
   //sets the frequency for the specified pin
   bool success = SetPinFrequencySafe(pwmOut, frequency);
-//  bool success2 = SetPinFrequencySafe(12, frequency);
-  
-  
+  //  bool success2 = SetPinFrequencySafe(12, frequency);
+
+
   Serial.begin(9600);
-  
+//  analogReference(INTERNAL2V56);
   //if the pin frequency was set successfully, turn pin 13 on
-//  if(success) {
-//    pinMode(13, OUTPUT);
-//    digitalWrite(13, HIGH);    
-//  }
+  //  if(success) {
+  //    pinMode(13, OUTPUT);
+  //    digitalWrite(13, HIGH);    
+  //  }
 }
 
 void loop()
 {
   //use this functions instead of analogWrite on 'initialized' pins
   pwmWrite(pwmOut, 128);
-//  pwmWrite(12, 180);
+  //  pwmWrite(12, 180);
   sensorValue = analogRead(sensorPin);
-  temp[count] = sensorValue;
-//  sum += sensorValue;
+  sum += sensorValue;
+//  if(preValue == 0){
+//    preValue = sensorValue;
+//  } 
+//  int temp = sensorValue/10*alpha + preValue*(1-alpha);
+delay(30);
+  Serial.println(analogRead(A1));
+//  sum += temp;
+//  preValue = temp;
   count++;
-  if(sensorValue > max){
-    max = sensorValue;
-  }
-  if(sensorValue < min){
-    min = sensorValue;
-  }
   if(count == 10){
     count = 0;
-    int i;
-    for(i=0;i<10;i++){
-      if(temp[i] != max && temp[i] != min){
-        sum += temp[i];
-      }
-    }
-    Serial.println(sum/8);
+//    Serial.println(sum/10);
     sum = 0;
-    max = 0;
-    min = 9999;
   }
   delay(30);      
 }
+
 
