@@ -19,6 +19,9 @@ int sensorPin = A0;
 int sensorValue = 0;
 int sum = 0;
 int count = 0;
+int max = 0;
+int min = 9999;
+int temp[10];
 
 void setup()
 {
@@ -45,12 +48,27 @@ void loop()
   pwmWrite(pwmOut, 128);
 //  pwmWrite(12, 180);
   sensorValue = analogRead(sensorPin);
-  sum += sensorValue;
+  temp[count] = sensorValue;
+//  sum += sensorValue;
   count++;
+  if(sensorValue > max){
+    max = sensorValue;
+  }
+  if(sensorValue < min){
+    min = sensorValue;
+  }
   if(count == 10){
     count = 0;
-    Serial.println(sum);
+    int i;
+    for(i=0;i<10;i++){
+      if(temp[i] != max && temp[i] != min){
+        sum += temp[i];
+      }
+    }
+    Serial.println(sum/8);
     sum = 0;
+    max = 0;
+    min = 9999;
   }
   delay(30);      
 }
