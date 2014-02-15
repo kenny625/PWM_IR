@@ -13,14 +13,11 @@
 #include <PWM.h>
 
 //use pin 11 on the Mega instead, otherwise there is a frequency cap at 31 Hz
-int pwmOut = 11;                // the pin that the LED is attached to
+int pwmOut1 = 11;
+int pwmOut2 = 12;
+int pwmOut3 = 2;
+int pwmOut4 = 3;
 int32_t frequency = 10000; //frequency (in Hz)
-int sensorPin = A0;
-int sensorValue = 0;
-int sum = 0;
-int count = 0;
-int preValue = 0;
-int alpha = 0.5;
 
 void setup()
 {
@@ -28,12 +25,14 @@ void setup()
   InitTimersSafe(); 
 
   //sets the frequency for the specified pin
-  bool success = SetPinFrequencySafe(pwmOut, frequency);
-  //  bool success2 = SetPinFrequencySafe(12, frequency);
+  bool success1 = SetPinFrequencySafe(pwmOut1, frequency);
+  bool success2 = SetPinFrequencySafe(pwmOut2, frequency);
+  bool success3 = SetPinFrequencySafe(pwmOut3, frequency);
+  bool success4 = SetPinFrequencySafe(pwmOut4, frequency);
 
 
   Serial.begin(9600);
-//  analogReference(INTERNAL2V56);
+
   //if the pin frequency was set successfully, turn pin 13 on
   //  if(success) {
   //    pinMode(13, OUTPUT);
@@ -44,25 +43,13 @@ void setup()
 void loop()
 {
   //use this functions instead of analogWrite on 'initialized' pins
-  pwmWrite(pwmOut, 128);
-  //  pwmWrite(12, 180);
-  sensorValue = analogRead(sensorPin);
-  sum += sensorValue;
-//  if(preValue == 0){
-//    preValue = sensorValue;
-//  } 
-//  int temp = sensorValue/10*alpha + preValue*(1-alpha);
-delay(30);
-  Serial.println(analogRead(A1));
-//  sum += temp;
-//  preValue = temp;
-  count++;
-  if(count == 10){
-    count = 0;
-//    Serial.println(sum/10);
-    sum = 0;
-  }
-  delay(30);      
+  pwmWrite(pwmOut1, 128);
+  pwmWrite(pwmOut2, 128);
+  pwmWrite(pwmOut3, 128);
+  pwmWrite(pwmOut4, 128);
+  
+  delay(60);
+      
 }
 
 
